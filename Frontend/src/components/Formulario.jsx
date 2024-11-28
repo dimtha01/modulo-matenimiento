@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-const API = 'http://localhost:3000/api/users';
+const API = 'http://localhost:3000/api/users'; // Asegúrate de que el endpoint esté correcto
 
 const Formulario = () => {
   const [datos, setDatos] = useState([]);
@@ -20,10 +21,27 @@ const Formulario = () => {
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevenir el comportamiento predeterminado
 
-    // Obtener los valores del formulario
+    // Mostrar SweetAlert2 para pedir la clave
+    Swal.fire({
+      title: 'Ingrese la clave para enviar la solicitud',
+      input: 'password',
+      inputPlaceholder: 'Ingrese la clave',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (value) => {
+        // Validar la clave ingresada
+        if (value !== "1234") {
+          return 'Clave incorrecta'; // Si la clave es incorrecta
+        } else {
+          // Si la clave es correcta, continuar con el envío del formulario
+          sendForm();
+        }
+      }
+    });
+  };
+  const sendForm = async () => {
     const nombreSolicitante = document.getElementById("nombre").value;
-    console.log("Nombre del solicitante:", nombreSolicitante);  // Verifica el valor
-
     const area = document.getElementById("area").value;
     const descripcion = document.getElementById("descripcion").value;
     const prioridad = document.getElementById("prioridad").value;
@@ -31,7 +49,7 @@ const Formulario = () => {
 
     // Crear un objeto con los datos del formulario
     const nuevaSolicitud = {
-      fecha_solicitud: new Date().toISOString(),
+      fecha_solicitud: formatDate(new Date().toISOString()),
       fecha_programada: fechaProgramada || null,
       area,
       descripcion,
@@ -64,6 +82,59 @@ const Formulario = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    // Crear un objeto Date a partir de la cadena
+    const date = new Date(dateString);
+
+    // Obtener el año, mes y día
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
+    const day = String(date.getDate()).padStart(2, '0');
+
+    // Formatear la fecha en 'YYYY-MM-DD'
+    return `${year}-${month}-${day}`;
+  };
+  // Completar el mantenimiento después de verificar la clave con SweetAlert2
+  const handleCompleteMantenimiento = (id) => {
+    Swal.fire({
+      title: 'Ingrese la clave para completar el mantenimiento',
+      input: 'password',
+      inputPlaceholder: 'Ingrese la clave',
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (value) => {
+        if (value !== "admin") {
+          return 'Clave incorrecta';
+        } else {
+          completeMantenimiento(id);
+        }
+      }
+    });
+  };
+  const completado = {
+    estado: "Completado"
+  };
+
+  // Acción para completar el mantenimiento
+  const completeMantenimiento = async (id) => {
+    try {
+      const response = await fetch(`${API}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(completado)
+      });
+
+      if (response.ok) {
+        Swal.fire('Éxito', 'Mantenimiento completado con éxito', 'success');
+        getDatos();  // Volver a obtener los datos después de completar el mantenimiento
+      } else {
+        Swal.fire('Error', 'No se pudo completar el mantenimiento', 'error');
+      }
+    } catch (error) {
+      console.error('Error al completar el mantenimiento:', error);
+    }
+  };
 
   useEffect(() => {
     getDatos();
@@ -74,7 +145,7 @@ const Formulario = () => {
       <div className="container">
         <h1 className="text-center">Solicitud de Mantenimiento</h1>
         <form id="mantenimientoForm" onSubmit={handleSubmit}>
-          <div className="row g-3"> {/* Start of the row for columns */}
+          <div className="row g-3">
             {/* Nombre del Solicitante */}
             <div className="col-md-6">
               <label htmlFor="nombre" className="form-label">Nombre del Solicitante:</label>
@@ -115,6 +186,7 @@ const Formulario = () => {
             </div>
           </div> {/* End of the row */}
 
+
           {/* Submit Button */}
           <button type="submit" className="btn btn-primary mt-3">Enviar Solicitud</button>
         </form>
@@ -131,7 +203,7 @@ const Formulario = () => {
               <th>Descripción</th>
               <th>Estado</th>
               <th>Prioridad</th>
-              <th>Nombre Solicitante</th> {/* Nueva columna para el nombre del solicitante */}
+              <th>Nombre Solicitante</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -146,11 +218,19 @@ const Formulario = () => {
                   <td>{item.descripcion}</td>
                   <td>{item.estado}</td>
                   <td>{item.prioridad}</td>
-                  <td>{item.nombre_solicitante ? item.nombre_solicitante : 'No especificado'}</td> {/* Mostrar nombre del solicitante */}
+                  <td>{item.nombre_solicitante ? item.nombre_solicitante : 'No especificado'}</td>
                   <td>
-                    {/* Aquí puedes agregar botones para editar o eliminar */}
-                    <button className="btn btn-warning">Editar</button>
-                    <button className="btn btn-danger">Eliminar</button>
+
+                    {(item.estado === "Pendiente") ? (
+                      <button
+                        className="btn btn-success btn-sm"
+                        onClick={() => handleCompleteMantenimiento(item.id)}
+                      >
+                        Completar Mantenimiento
+                      </button>
+                    ) : (
+                      <span>Completado</span>
+                    )}
                   </td>
                 </tr>
               );

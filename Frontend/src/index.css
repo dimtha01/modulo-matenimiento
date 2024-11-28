@@ -1,0 +1,88 @@
+/* Definir el tema usando variables CSS */
+:root {
+  --primary-100: #d4eaf7;
+  --primary-200: #b6ccd8;
+  --primary-300: #3b3c3d;
+  --accent-100: #71c4ef;
+  --accent-200: #00668c;
+  --text-100: #1d1c1c;
+  --text-200: #313d44;
+  --bg-100: #fffefb;
+  --bg-200: #f5f4f1;
+  --bg-300: #cccbc8;
+}
+
+/* Aplicar los colores a la página */
+body {
+  background-color: var(--bg-100);
+  color: var(--text-200);
+  font-family: Arial, sans-serif;
+}
+
+/* Encabezados y títulos */
+h1, h2, h3 {
+  color: var(--primary-300);
+}
+
+/* Botones */
+button {
+  background-color: var(--accent-200);
+  color: var(--bg-100);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: var(--accent-100);
+}
+
+/* Estilo de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background-color: var(--primary-200);
+  color: var(--text-100);
+}
+
+table tr:nth-child(even) {
+  background-color: var(--bg-200);
+}
+
+table tr:nth-child(odd) {
+  background-color: var(--bg-300);
+}
+
+table tr:hover {
+  background-color: var(--primary-100);
+}
+
+table td {
+  color: var(--text-200);
+}
+
+/* Estilos de estado */
+.bg-success {
+  background-color: var(--accent-100);
+  color: var(--bg-100);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.bg-warning {
+  background-color: var(--primary-300);
+  color: var(--bg-100);
+  padding: 5px;
+  border-radius: 5px;
+}
