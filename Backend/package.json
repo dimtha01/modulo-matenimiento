@@ -1,0 +1,20 @@
+{
+  "name": "mi-api",
+  "version": "1.0.0",
+  "description": "Una API básica en Node.js con Express usando un archivo JSON",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "node src/app.js",
+    "start": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "fs": "0.0.1-security",
+    "mongoose": "^8.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "fecha_solicitud": "2024-11-25",
+    "fecha_programada": "2024-11-27",
+    "area": "Muelles",
+    "descripcion": "Reparación de tablones en el muelle principal.",
+    "estado": "Pendiente",
+    "prioridad": "Alta",
+    "nombre_solicitante": "Juan Pérez"
+  },
+  {
+    "id": 2,
+    "fecha_solicitud": "2024-11-30",
+    "fecha_programada": "2024-12-02",
+    "area": "Barcos",
+    "descripcion": "Mantenimiento del motor del barco pesquero.",
+    "estado": "En Progreso",
+    "prioridad": "Media",
+    "nombre_solicitante": "Ana López"
+  },
+  {
+    "id": 3,
+    "fecha_solicitud": "2024-12-05",
+    "fecha_programada": "2024-12-06",
+    "area": "Equipos de Carga",
+    "descripcion": "Revisión de la grúa de carga.",
+    "estado": "Completado",
+    "prioridad": "Baja",
+    "nombre_solicitante": "Carlos Gómez"
+  },
+  {
+    "id": 4,
+    "fecha_solicitud": "2024-12-01",
+    "fecha_programada": "2024-12-03",
+    "area": "Muelles",
+    "descripcion": "Inspección de las defensas del muelle.",
+    "estado": "Pendiente",
+    "prioridad": "Alta",
+    "nombre_solicitante": "María Fernández"
+  }
+]
